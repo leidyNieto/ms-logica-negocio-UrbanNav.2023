@@ -33,6 +33,10 @@ export class Cars extends Entity {
   })
   plate: string;
 
+  @property({
+    type: 'number',
+  })
+  driverId?: number;
 
   constructor(data?: Partial<Cars>) {
     super(data);

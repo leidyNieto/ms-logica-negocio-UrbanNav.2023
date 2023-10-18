@@ -39,6 +39,10 @@ export class Qualification extends Entity {
   })
   Date: string;
 
+  @property({
+    type: 'number',
+  })
+  tripId?: number;
 
   constructor(data?: Partial<Qualification>) {
     super(data);

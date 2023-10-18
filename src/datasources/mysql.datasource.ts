@@ -1,15 +1,16 @@
 import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {juggler} from '@loopback/repository';
-import {configuracionSeguridaad} from '../config/seguridad.config';
+import {configuracionSeguridad} from '../config/seguridad.config';
+
 
 const config = {
   name: 'mysql',
   connector: 'mysql',
   url: '',
-  host: configuracionSeguridaad.mysqlConnectionString,
-  port: 3306,
-  user: configuracionSeguridaad.userMysql,
-  password: configuracionSeguridaad.passwordMysql,
+  host:configuracionSeguridad.mysqlConnectionString,
+  port:3306,
+  user:configuracionSeguridad.userMysql,
+  password: configuracionSeguridad.passwordMysql,
   database: 'UrbanNavDB'
 };
 

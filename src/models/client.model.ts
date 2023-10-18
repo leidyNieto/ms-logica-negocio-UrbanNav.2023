@@ -1,4 +1,6 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, belongsTo, model, property} from '@loopback/repository';
+import {Trip} from './trip.model';
+import {User} from './user.model';
 
 @model()
 export class Client extends Entity {
@@ -13,6 +15,13 @@ export class Client extends Entity {
     type: 'string',
   })
   address?: string;
+
+  @belongsTo(() => User)
+  userId: number;
+
+  @belongsTo(() => Trip)
+  tripId: number;
+
 
 
   constructor(data?: Partial<Client>) {

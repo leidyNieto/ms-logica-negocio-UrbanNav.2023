@@ -1,4 +1,7 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasMany, belongsTo} from '@loopback/repository';
+import {Trip} from './trip.model';
+import {User} from './user.model';
+import {Cars} from './cars.model';
 
 @model()
 export class Driver extends Entity {
@@ -21,6 +24,14 @@ export class Driver extends Entity {
   })
   fechaVencimientoLicencia: string;
 
+  @hasMany(() => Trip)
+  trips: Trip[];
+
+  @belongsTo(() => User)
+  userId: number;
+
+  @hasMany(() => Cars)
+  cars: Cars[];
 
   constructor(data?: Partial<Driver>) {
     super(data);
