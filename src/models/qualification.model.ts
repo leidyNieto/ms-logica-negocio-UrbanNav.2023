@@ -1,6 +1,19 @@
 import {Entity, model, property} from '@loopback/repository';
 
-@model()
+@model(
+  {
+    settings:{
+      foreignKeys:{
+        fk_trip_id:{
+          name:'fk_trip_id',
+          entity:'Trip',
+          entityKey:'id',
+          foreignKey:'tripId'
+        }
+      }
+    }
+  }
+)
 export class Qualification extends Entity {
   @property({
     type: 'number',

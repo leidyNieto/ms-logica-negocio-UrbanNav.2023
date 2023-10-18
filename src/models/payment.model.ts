@@ -1,8 +1,27 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {Trip} from './trip.model';
+import {Entity, belongsTo, model, property} from '@loopback/repository';
 import {Client} from './client.model';
+import {Trip} from './trip.model';
 
-@model()
+@model(
+  {
+    settings:{
+      foreignKeys:{
+        fk_trip_id:{
+          name:'fk_trip_id',
+          entity:'Trip',
+          entityKey:'id',
+          foreignKey:'tripId'
+        },
+        fk_client_id:{
+          name:'fk_client_id',
+          entity:'Client',
+          entityKey:'id',
+          foreignKey:'clientId'
+        }
+      }
+    }
+  }
+)
 export class Payment extends Entity {
   @property({
     type: 'number',

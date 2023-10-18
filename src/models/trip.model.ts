@@ -1,8 +1,21 @@
-import {Entity, model, property, hasMany, belongsTo} from '@loopback/repository';
-import {Qualification} from './qualification.model';
+import {Entity, belongsTo, hasMany, model, property} from '@loopback/repository';
 import {Location} from './location.model';
+import {Qualification} from './qualification.model';
 
-@model()
+@model(
+  {
+    settings:{
+      foreignKeys:{
+        fk_location_id:{
+          name:'fk_location_id',
+          entity:'Location',
+          entityKey:'id',
+          foreignKey:'locationId'
+        }
+      }
+    }
+  }
+)
 export class Trip extends Entity {
   @property({
     type: 'number',
