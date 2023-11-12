@@ -23,7 +23,7 @@ export class AdministradorDeArchivosController {
   constructor(){}
 
   //@authenticate('admin')
-  @post('cargar-archivo-producto', {
+  @post('cargar-archivo-user', {
     responses: {
       200 : {
         //se resive un objeto de formato json
@@ -38,19 +38,20 @@ export class AdministradorDeArchivosController {
       }
     }
   })
-  async cargarArchivoProducto(
+  async cargarArchivoUser(
     //tiene dos parametros
     @inject(RestBindings.Http.RESPONSE) response: Response,
     @requestBody.file() request: Request,
     ): Promise<object | false>{
       //ruta del archivo va a ser _dirname
-      //ConfiguraciónGeneral.cargarArchivoProducto para saber donde se va a guardar la carpeta
+      //ConfiguraciónGeneral.cargarArchivoUser para saber donde se va a guardar la carpeta
      const filePath = path.join(__dirname,ConfiguracionGeneral.carpetaArchivoUser);
      //se tiene un metodo que se va a tener localmente y se llama StoreFileToPath
-     // que tiene la carpeta donde se va a guardar, y el campo de producto como va a llegar descrito
+     // que tiene la carpeta donde se va a guardar, y el campo de user
+     //como va a llegar descrito
      let res = await this.StoreFileToPath (
      filePath,
-     ConfiguracionGeneral.campoProducto,
+     ConfiguracionGeneral.campo,
      request,
      response,
      ConfiguracionGeneral.extensionesImagenes,

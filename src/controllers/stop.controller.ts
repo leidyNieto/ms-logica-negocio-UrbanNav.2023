@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -7,16 +8,17 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
+import {configuracionSeguridad} from '../config/seguridad.config';
 import {Stop} from '../models';
 import {StopRepository} from '../repositories';
 
@@ -58,6 +60,10 @@ export class StopController {
     return this.stopRepository.count(where);
   }
 
+  @authenticate({
+    strategy:"auth",
+    options:[configuracionSeguridad.menuParadasId,configuracionSeguridad.listarAccion]
+  })
   @get('/stop')
   @response(200, {
     description: 'Array of Stop model instances',

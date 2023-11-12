@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -7,16 +8,17 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
+import {configuracionSeguridad} from '../config/seguridad.config';
 import {Distance} from '../models';
 import {DistanceRepository} from '../repositories';
 
@@ -58,6 +60,10 @@ export class DistanceController {
     return this.distanceRepository.count(where);
   }
 
+  @authenticate({
+    strategy:"auth",
+    options:[configuracionSeguridad.menuDistanciaId, configuracionSeguridad.listarAccion]
+  })
   @get('/distance')
   @response(200, {
     description: 'Array of Distance model instances',
