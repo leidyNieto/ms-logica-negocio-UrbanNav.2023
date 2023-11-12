@@ -26,7 +26,7 @@ export class QualificationController {
     public qualificationRepository : QualificationRepository,
   ) {}
 
-  @post('/Qualification')
+  @post('/qualification')
   @response(200, {
     description: 'Qualification model instance',
     content: {'application/json': {schema: getModelSchemaRef(Qualification)}},
@@ -47,7 +47,7 @@ export class QualificationController {
     return this.qualificationRepository.create(qualification);
   }
 
-  @get('/Qualification/count')
+  @get('/qualification/count')
   @response(200, {
     description: 'Qualification model count',
     content: {'application/json': {schema: CountSchema}},
@@ -58,7 +58,7 @@ export class QualificationController {
     return this.qualificationRepository.count(where);
   }
 
-  @get('/Qualification')
+  @get('/qualification')
   @response(200, {
     description: 'Array of Qualification model instances',
     content: {
@@ -76,7 +76,7 @@ export class QualificationController {
     return this.qualificationRepository.find(filter);
   }
 
-  @patch('/Qualification')
+  @patch('/qualification')
   @response(200, {
     description: 'Qualification PATCH success count',
     content: {'application/json': {schema: CountSchema}},
@@ -95,7 +95,7 @@ export class QualificationController {
     return this.qualificationRepository.updateAll(qualification, where);
   }
 
-  @get('/Qualification/{id}')
+  @get('/qualification/{id}')
   @response(200, {
     description: 'Qualification model instance',
     content: {
@@ -111,7 +111,7 @@ export class QualificationController {
     return this.qualificationRepository.findById(id, filter);
   }
 
-  @patch('/Qualification/{id}')
+  @patch('/qualification/{id}')
   @response(204, {
     description: 'Qualification PATCH success',
   })
@@ -129,7 +129,7 @@ export class QualificationController {
     await this.qualificationRepository.updateById(id, qualification);
   }
 
-  @put('/Qualification/{id}')
+  @put('/qualification/{id}')
   @response(204, {
     description: 'Qualification PUT success',
   })
@@ -140,7 +140,7 @@ export class QualificationController {
     await this.qualificationRepository.replaceById(id, qualification);
   }
 
-  @del('/Qualification/{id}')
+  @del('/qualification/{id}')
   @response(204, {
     description: 'Qualification DELETE success',
   })

@@ -8,31 +8,31 @@ import {
 } from '@loopback/rest';
 import {
   Trip,
-  Location,
+  Client,
 } from '../models';
 import {TripRepository} from '../repositories';
 
-export class TripLocationController {
+export class TripClientController {
   constructor(
     @repository(TripRepository)
     public tripRepository: TripRepository,
   ) { }
 
-  @get('/trips/{id}/location', {
+  @get('/trips/{id}/client', {
     responses: {
       '200': {
-        description: 'Location belonging to Trip',
+        description: 'Client belonging to Trip',
         content: {
           'application/json': {
-            schema: getModelSchemaRef(Location),
+            schema: getModelSchemaRef(Client),
           },
         },
       },
     },
   })
-  async getLocation(
+  async getClient(
     @param.path.number('id') id: typeof Trip.prototype.id,
-  ): Promise<Location> {
-    return this.tripRepository.Destination(id);
+  ): Promise<Client> {
+    return this.tripRepository.client(id);
   }
 }

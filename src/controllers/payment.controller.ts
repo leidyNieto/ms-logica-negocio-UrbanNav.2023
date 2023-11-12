@@ -7,13 +7,13 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
@@ -42,7 +42,7 @@ export class PaymentController {
         },
       },
     })
-    payment: Omit<Payment, 'id'>,
+    payment: Omit<Payment, 'id '>,
   ): Promise<Payment> {
     return this.paymentRepository.create(payment);
   }

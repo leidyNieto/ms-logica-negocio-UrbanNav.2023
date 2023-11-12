@@ -5,7 +5,7 @@ import {
   repository,
   Where,
 } from '@loopback/repository';
-import {
+  import {
   del,
   get,
   getModelSchemaRef,
@@ -16,20 +16,21 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {
-  City,
-  Location,
+Driver,
+LocationDriver,
+Location,
 } from '../models';
-import {CityRepository} from '../repositories';
+import {DriverRepository} from '../repositories';
 
-export class CityLocationController {
+export class DriverLocationController {
   constructor(
-    @repository(CityRepository) protected cityRepository: CityRepository,
+    @repository(DriverRepository) protected driverRepository: DriverRepository,
   ) { }
 
-  @get('/cities/{id}/locations', {
+  @get('/drivers/{id}/locations', {
     responses: {
       '200': {
-        description: 'Array of City has many Location',
+        description: 'Array of Driver has many Location through LocationDriver',
         content: {
           'application/json': {
             schema: {type: 'array', items: getModelSchemaRef(Location)},
@@ -42,38 +43,37 @@ export class CityLocationController {
     @param.path.number('id') id: number,
     @param.query.object('filter') filter?: Filter<Location>,
   ): Promise<Location[]> {
-    return this.cityRepository.locations(id).find(filter);
+    return this.driverRepository.locations(id).find(filter);
   }
 
-  @post('/cities/{id}/locations', {
+  @post('/drivers/{id}/locations', {
     responses: {
       '200': {
-        description: 'City model instance',
+        description: 'create a Location model instance',
         content: {'application/json': {schema: getModelSchemaRef(Location)}},
       },
     },
   })
   async create(
-    @param.path.number('id') id: typeof City.prototype.id,
+    @param.path.number('id') id: typeof Driver.prototype.id,
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Location, {
-            title: 'NewLocationInCity',
+            title: 'NewLocationInDriver',
             exclude: ['id'],
-            optional: ['cityId']
           }),
         },
       },
     }) location: Omit<Location, 'id'>,
   ): Promise<Location> {
-    return this.cityRepository.locations(id).create(location);
+    return this.driverRepository.locations(id).create(location);
   }
 
-  @patch('/cities/{id}/locations', {
+  @patch('/drivers/{id}/locations', {
     responses: {
       '200': {
-        description: 'City.Location PATCH success count',
+        description: 'Driver.Location PATCH success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -90,13 +90,13 @@ export class CityLocationController {
     location: Partial<Location>,
     @param.query.object('where', getWhereSchemaFor(Location)) where?: Where<Location>,
   ): Promise<Count> {
-    return this.cityRepository.locations(id).patch(location, where);
+    return this.driverRepository.locations(id).patch(location, where);
   }
 
-  @del('/cities/{id}/locations', {
+  @del('/drivers/{id}/locations', {
     responses: {
       '200': {
-        description: 'City.Location DELETE success count',
+        description: 'Driver.Location DELETE success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -105,6 +105,6 @@ export class CityLocationController {
     @param.path.number('id') id: number,
     @param.query.object('where', getWhereSchemaFor(Location)) where?: Where<Location>,
   ): Promise<Count> {
-    return this.cityRepository.locations(id).delete(where);
+    return this.driverRepository.locations(id).delete(where);
   }
 }

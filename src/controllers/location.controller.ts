@@ -7,13 +7,13 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
@@ -42,7 +42,7 @@ export class LocationController {
         },
       },
     })
-    location: Omit<Location, 'id'>,
+    location: Omit<Location, 'id '>,
   ): Promise<Location> {
     return this.locationRepository.create(location);
   }

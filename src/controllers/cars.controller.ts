@@ -26,7 +26,7 @@ export class CarsController {
     public carsRepository : CarsRepository,
   ) {}
 
-  @post('/car')
+  @post('/cars')
   @response(200, {
     description: 'Cars model instance',
     content: {'application/json': {schema: getModelSchemaRef(Cars)}},
@@ -47,7 +47,7 @@ export class CarsController {
     return this.carsRepository.create(cars);
   }
 
-  @get('/car/count')
+  @get('/cars/count')
   @response(200, {
     description: 'Cars model count',
     content: {'application/json': {schema: CountSchema}},
@@ -58,7 +58,7 @@ export class CarsController {
     return this.carsRepository.count(where);
   }
 
-  @get('/car')
+  @get('/cars')
   @response(200, {
     description: 'Array of Cars model instances',
     content: {
@@ -76,7 +76,7 @@ export class CarsController {
     return this.carsRepository.find(filter);
   }
 
-  @patch('/car')
+  @patch('/cars')
   @response(200, {
     description: 'Cars PATCH success count',
     content: {'application/json': {schema: CountSchema}},
@@ -95,7 +95,7 @@ export class CarsController {
     return this.carsRepository.updateAll(cars, where);
   }
 
-  @get('/car/{id}')
+  @get('/cars/{id}')
   @response(200, {
     description: 'Cars model instance',
     content: {
@@ -111,7 +111,7 @@ export class CarsController {
     return this.carsRepository.findById(id, filter);
   }
 
-  @patch('/car/{id}')
+  @patch('/cars/{id}')
   @response(204, {
     description: 'Cars PATCH success',
   })
@@ -129,7 +129,7 @@ export class CarsController {
     await this.carsRepository.updateById(id, cars);
   }
 
-  @put('/car/{id}')
+  @put('/cars/{id}')
   @response(204, {
     description: 'Cars PUT success',
   })
@@ -140,7 +140,7 @@ export class CarsController {
     await this.carsRepository.replaceById(id, cars);
   }
 
-  @del('/car/{id}')
+  @del('/cars/{id}')
   @response(204, {
     description: 'Cars DELETE success',
   })

@@ -1,6 +1,25 @@
 import {Entity, model, property} from '@loopback/repository';
 
-@model()
+@model(
+   {
+    settings: {
+      foreignKeys: {
+        fk_location_driver_locationId: {
+          name: 'fk_location_driver_locationId',
+          entity: 'Location',
+          entityKey: 'id',
+          foreignKey: 'locationId',
+        },
+        fk_location_driver_driverId: {
+          name: 'fk_location_driver_driverId',
+          entity: 'Driver',
+          entityKey: 'id',
+          foreignKey: 'driverId',
+        },
+      },
+    },
+   }
+)
 export class LocationDriver extends Entity {
   @property({
     type: 'number',
@@ -15,6 +34,15 @@ export class LocationDriver extends Entity {
   })
   originDriver: string;
 
+  @property({
+    type: 'number',
+  })
+  locationId?: number;
+
+  @property({
+    type: 'number',
+  })
+  driverId?: number;
 
   constructor(data?: Partial<LocationDriver>) {
     super(data);

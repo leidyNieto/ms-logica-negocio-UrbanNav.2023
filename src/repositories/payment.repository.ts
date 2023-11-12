@@ -1,9 +1,9 @@
-import {inject, Getter} from '@loopback/core';
+import {Getter, inject} from '@loopback/core';
 import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
 import {MysqlDataSource} from '../datasources';
 import {Payment, PaymentRelations, Trip, Client} from '../models';
-import {TripRepository} from './trip.repository';
 import {ClientRepository} from './client.repository';
+import {TripRepository} from './trip.repository';
 
 export class PaymentRepository extends DefaultCrudRepository<
   Payment,
@@ -23,5 +23,7 @@ export class PaymentRepository extends DefaultCrudRepository<
     this.registerInclusionResolver('client', this.client.inclusionResolver);
     this.trip = this.createBelongsToAccessorFor('trip', tripRepositoryGetter,);
     this.registerInclusionResolver('trip', this.trip.inclusionResolver);
+
+
   }
 }

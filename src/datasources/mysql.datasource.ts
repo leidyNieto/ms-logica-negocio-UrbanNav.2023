@@ -10,7 +10,7 @@ const config = {
   host:configuracionSeguridad.mysqlConnectionString,
   port:3306,
   user:configuracionSeguridad.userMysql,
-  password: configuracionSeguridad.passwordMysql,
+  password:configuracionSeguridad.passwordMysql,
   database: 'UrbanNavDB'
 };
 

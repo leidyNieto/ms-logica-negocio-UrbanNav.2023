@@ -1,7 +1,22 @@
-import {Entity, model, property, hasMany} from '@loopback/repository';
-import {Trip} from './trip.model';
+import {Entity, belongsTo, hasMany, model, property} from '@loopback/repository';
+import {City} from './city.model';
+import {Driver} from './driver.model';
+import {LocationDriver} from './location-driver.model';
 
-@model()
+@model(
+ {
+  settings:{
+    foreignKeys: {
+      fk_location_city: {
+        name: 'fk_location_city',
+        entity: 'City',
+        entityKey: 'id',
+        foreignKey: 'cityId',
+      },
+    },
+  },
+  }
+)
 export class Location extends Entity {
   @property({
     type: 'number',
@@ -16,13 +31,11 @@ export class Location extends Entity {
   })
   name: string;
 
-  @hasMany(() => Trip)
-  trips: Trip[];
+  @hasMany(() => Driver, {through: {model: () => LocationDriver}})
+  drivers: Driver[];
 
-  @property({
-    type: 'number',
-  })
-  cityId?: number;
+  @belongsTo(() => City)
+  cityId: number;
 
   constructor(data?: Partial<Location>) {
     super(data);

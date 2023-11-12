@@ -4,23 +4,23 @@ import {Trip} from './trip.model';
 
 @model(
   {
-    settings:{
-      foreignKeys:{
-        fk_trip_id:{
-          name:'fk_trip_id',
-          entity:'Trip',
-          entityKey:'id',
-          foreignKey:'tripId'
+    settings: {
+      foreignKeys: {
+        fk_payment_tripId: {
+          name: 'fk_payment_tripId',
+          entity: 'Trip',
+          entityKey: 'id',
+          foreignKey: 'tripId',
         },
-        fk_client_id:{
-          name:'fk_client_id',
-          entity:'Client',
-          entityKey:'id',
-          foreignKey:'clientId'
-        }
-      }
-    }
-  }
+        fk_payment_clientId: {
+          name: 'fk_payment_clientId',
+          entity: 'Client',
+          entityKey: 'id',
+          foreignKey: 'clientId',
+        },
+      },
+    },
+  },
 )
 export class Payment extends Entity {
   @property({

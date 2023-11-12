@@ -1,18 +1,19 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, belongsTo, model, property} from '@loopback/repository';
+import {Trip} from './trip.model';
 
 @model(
   {
-    settings:{
-      foreignKeys:{
-        fk_trip_id:{
-          name:'fk_trip_id',
-          entity:'Trip',
-          entityKey:'id',
-          foreignKey:'tripId'
-        }
-      }
-    }
-  }
+    settings: {
+      foreignKeys: {
+        fk_qualification_tripId: {
+          name: 'fk_qualification_tripId',
+          entity: 'Trip',
+          entityKey: 'id',
+          foreignKey: 'tripId',
+        },
+      },
+    },
+  },
 )
 export class Qualification extends Entity {
   @property({
@@ -52,10 +53,8 @@ export class Qualification extends Entity {
   })
   Date: string;
 
-  @property({
-    type: 'number',
-  })
-  tripId?: number;
+  @belongsTo(() => Trip)
+  tripId: number;
 
   constructor(data?: Partial<Qualification>) {
     super(data);

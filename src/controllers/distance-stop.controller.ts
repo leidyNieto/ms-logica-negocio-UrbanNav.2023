@@ -8,31 +8,31 @@ import {
 } from '@loopback/rest';
 import {
   Distance,
-  Location,
+  Stop,
 } from '../models';
 import {DistanceRepository} from '../repositories';
 
-export class DistanceLocationController {
+export class DistanceStopController {
   constructor(
     @repository(DistanceRepository)
     public distanceRepository: DistanceRepository,
   ) { }
 
-  @get('/distances/{id}/location', {
+  @get('/distances/{id}/stop', {
     responses: {
       '200': {
-        description: 'Location belonging to Distance',
+        description: 'Stop belonging to Distance',
         content: {
           'application/json': {
-            schema: getModelSchemaRef(Location),
+            schema: getModelSchemaRef(Stop),
           },
         },
       },
     },
   })
-  async getLocation(
+  async getStop(
     @param.path.number('id') id: typeof Distance.prototype.id,
-  ): Promise<Location> {
-    return this.distanceRepository.Destination(id);
+  ): Promise<Stop> {
+    return this.distanceRepository.Destino(id);
   }
 }

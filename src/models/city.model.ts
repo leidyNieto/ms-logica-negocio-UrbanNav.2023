@@ -2,18 +2,6 @@ import {Entity, hasMany, model, property} from '@loopback/repository';
 import {Location} from './location.model';
 
 @model(
-  {
-    settings:{
-      foreignKeys:{
-        fk_location_id:{
-          name:'fk_location_id',
-          entity:'Location',
-          entityKey:'id',
-          foreignKey:'locationId'
-        }
-      }
-    }
-  }
 )
 export class City extends Entity {
   @property({

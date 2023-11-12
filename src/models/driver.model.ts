@@ -1,21 +1,11 @@
-import {Entity, belongsTo, hasMany, model, property} from '@loopback/repository';
+import {Entity, hasMany, model, property} from '@loopback/repository';
 import {Cars} from './cars.model';
+import {LocationDriver} from './location-driver.model';
+import {Location} from './location.model';
 import {Trip} from './trip.model';
-import {User} from './user.model';
 
 @model(
-  {
-    settings:{
-      foreignKeys:{
-        fk_user_id:{
-          name:'fk_user_id',
-          entity:'User',
-          entityKey:'id',
-          foreignKey:'userId'
-        }
-      }
-    }
-  }
+
 )
 export class Driver extends Entity {
   @property({
@@ -40,8 +30,8 @@ export class Driver extends Entity {
   @hasMany(() => Trip)
   trips: Trip[];
 
-  @belongsTo(() => User)
-  userId: number;
+  @hasMany(() => Location, {through: {model: () => LocationDriver}})
+  locations: Location[];
 
   @hasMany(() => Cars)
   cars: Cars[];
