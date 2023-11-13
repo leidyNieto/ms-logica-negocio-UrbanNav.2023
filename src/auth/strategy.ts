@@ -1,6 +1,8 @@
 //este codigo se encuentra en la pagina de loopback
 //se coloca la liberia npm i @loopback/authentication y npm i @loopback/security
 // se coloca la libreria npm i parse-bearer-token
+//se coloca la libreria npm i node-fetch@2.6.7
+//la estrategia de autentificación en este caso es la forma de conectar con otros microservicios
 import {AuthenticationStrategy} from '@loopback/authentication';
 import {AuthenticationBindings} from '@loopback/authentication/dist/keys';
 import {AuthenticationMetadata} from '@loopback/authentication/dist/types';
@@ -8,40 +10,56 @@ import {inject} from '@loopback/context';
 import {HttpErrors, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import parseBearerToken from 'parse-bearer-token';
-
+import {configuracionSeguridad} from '../config/seguridad.config';
+const fetch = require('node-fetch');
 
 export class AuthStrategy implements AuthenticationStrategy {
-    name: string = 'auth';
+  name: string = 'auth';
 
-    constructor(
-    //inyector de un metadata
+  constructor(
     @inject(AuthenticationBindings.METADATA)
     private metadata: AuthenticationMetadata[],
-    ) {}
+  ) {
 
-    /**
-     * autentificación de un usuario frente a una acción en la base de datos
-     * @param request la solicitud con el token
-     * @returns perfil de usuario o undefined cuando no ahi permiso
-     */
-    async authenticate(request: Request): Promise<UserProfile | undefined> {
-      let token = parseBearerToken(request);
-      if(token){
-       let idMenu:string = this.metadata[0].options![0];
-       let accion:string = this.metadata[0].options![1];
-       console.log(this.metadata);
-       console.log("Conectar con ms-seguridad")
+  }
 
-       let continuar : boolean = false;
-         if(continuar){
+  /**
+   * Autenticación de un usuario frente a una acción en la base de datos
+   * @param request la solicitud con el token
+   * @returns el perfil de usuario, undefined cuando no tiene permiso o un httpError
+   */
+  async authenticate(request: Request): Promise<UserProfile | undefined> {
+    let token = parseBearerToken(request);
+    if (token) {
+      let idMenu: string = this.metadata[0].options![0];
+      let accion: string = this.metadata[0].options![1];
+      console.log(this.metadata);
+
+      const datos = {token: token, idMenu: idMenu, accion: accion};
+      const urlValidarPermisos = `${configuracionSeguridad.enlaceMicroservicioSeguridad}/validar-permisos`;
+      let res = undefined;
+      try {
+        await fetch(urlValidarPermisos, {
+          method: 'post',
+          body: JSON.stringify(datos),
+          headers: {'Content-Type': 'application/json'},
+        }).then((res: any) => res.json())
+          .then((json: any) => {
+            res = json;
+          });
+          if (res) {
             let perfil: UserProfile = Object.assign({
-             permitido : "OK"
+              permitido: "OK"
             });
             return perfil;
-         }else{
-           return undefined;
-         }
-         }
-      throw new HttpErrors[401]("no se puede ejecutar la acción por falta de un token.");
-     }
-   }
+          } else {
+            return undefined;
+          }
+
+      } catch (e) {
+        throw new HttpErrors[401]("No se tiene permisos sobre la acción a ejecutar.");
+      }
+    }
+    throw new HttpErrors[401]("No es posible ejecutar la acción por falta de un token.");
+  }
+}

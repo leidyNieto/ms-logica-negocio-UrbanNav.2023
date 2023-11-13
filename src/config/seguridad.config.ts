@@ -6,7 +6,9 @@ export namespace configuracionSeguridad {
   export const eliminarAccion = "eliminar";
   export const guardarAccion = "guardar";
   export const descargarAccion = "descargar";
+  export const enlaceMicroservicioSeguridad : string = "http://localhost:3001";
   export const mysqlConnectionString = process.env.MYSQL_CONNECTION_STRING;
   export const userMysql = process.env.USER_MYSQL;
   export const passwordMysql = process.env.PASSWORD_MYSQL;
+
 }
