@@ -18,17 +18,7 @@ export class Stop extends Entity {
   @property({
     type: 'string',
   })
-  latitude?: string;
-
-  @property({
-    type: 'string',
-  })
-  length?: string;
-
-  @property({
-    type: 'string',
-  })
-  password?: string;
+  key?: string;
 
 
   constructor(data?: Partial<Stop>) {
