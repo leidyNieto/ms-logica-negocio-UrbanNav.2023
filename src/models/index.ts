@@ -7,7 +7,6 @@ export * from './location-driver.model';
 export * from './location.model';
 export * from './payment.model';
 export * from './qualification.model';
-export * from './stop.model';
 export * from './trip.model';
 export * from './user.model';
 

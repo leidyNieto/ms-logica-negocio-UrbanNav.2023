@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -17,6 +18,7 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import {configuracionSeguridad} from '../config/seguridad.config';
 import {Location} from '../models';
 import {LocationRepository} from '../repositories';
 
@@ -57,7 +59,10 @@ export class LocationController {
   ): Promise<Count> {
     return this.locationRepository.count(where);
   }
-
+  @authenticate({
+    strategy:"auth",
+    options:[configuracionSeguridad.menuParadasId, configuracionSeguridad.listarAccion]
+  })
   @get('/location')
   @response(200, {
     description: 'Array of Location model instances',

@@ -2,30 +2,32 @@
 
 import {Node} from './node';
 
-export class Edge{
-  node:Node
-  weight:number
+export class Edge {
+  node: Node;
+  weight: number;
 
-  constructor(node:Node, weight:number){
+  constructor(node: Node, weight: number) {
     this.node = node;
     this.weight = weight;
   }
 
-  //agregueme el set y get del nodo
-  getNode(){
+  // get node of edge
+  getNode() {
     return this.node;
   }
 
-  setNode(node:Node){
-    this.node = node;
-  }
-
-  //agregueme el set y get del peso
-  getWeight(){
+  // get weight of edge
+  getWeight() {
     return this.weight;
   }
 
-  setWeight(weight:number){
+  // set node of edge
+  setNode(node: Node) {
+    this.node = node;
+  }
+
+  // set weight of edge
+  setWeight(weight: number) {
     this.weight = weight;
   }
 }

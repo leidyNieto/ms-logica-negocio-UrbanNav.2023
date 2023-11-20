@@ -13,6 +13,7 @@ import {LocationDriver} from './location-driver.model';
         entityKey: 'id',
         foreignKey: 'cityId',
       },
+
     },
   },
   }
@@ -30,6 +31,12 @@ export class Location extends Entity {
     required: true,
   })
   name: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  key: string;
 
   @hasMany(() => Driver, {through: {model: () => LocationDriver}})
   drivers: Driver[];

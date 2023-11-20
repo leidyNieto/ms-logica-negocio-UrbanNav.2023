@@ -2,61 +2,49 @@
 
 import {Node} from './node';
 
-export class Graph{
-  nodes:Node[]
+export class Graph {
 
-  constructor(nodos:Node[]){
-    this.nodes = [];
+  nodes: Node[];
+
+  constructor(nodos: Node[]) {
+    this.nodes = nodos;
   }
 
-  //agregueme un nodo al grafo
-  addNode(node:Node){
+  // add node to graph
+  addNode(node: Node) {
     this.nodes.push(node);
   }
 
-  //agregueme el set y get de los nodos
-  getNodes(){
+  // get node list of graph
+  getNodes() {
     return this.nodes;
   }
 
-  setNodes(nodes:Node[]){
+  // set node list of graph
+  setNodes(nodes: Node[]) {
     this.nodes = nodes;
   }
 
-  //agregueme el metodo para obtener un nodo por id
-  getNodeById(id:number){
-    for(let i = 0; i < this.nodes.length; i++){
-      if(this.nodes[i].getId() == id){
-        return this.nodes[i];
-      }
-    }
-    return null;
+  // get node of graph by id
+  getNodeById(id: string) {
+    return this.nodes.find(node => node.getId().toString() === id);
   }
 
-
-  //agregueme el metodo para obtener un nodo por label(tiqueta)
-  getNodeByLabel(label:string){
-    for(let i = 0; i < this.nodes.length; i++){
-      if(this.nodes[i].getLabel() == label){
-        return this.nodes[i];
-      }
-    }
-    return null;
+  // get node of graph by label
+  getNodeByLabel(label: string) {
+    return this.nodes.find(node => node.getLabel() === label);
   }
 
-  //mostrar el grafo por consola
-  showGraph(){
+  // show graph by console
+  showGraph() {
     console.log(this.nodes);
   }
 
-  showGraphNodes(){
+  // show graph by console node by node with their edges
+  showGraphNodes() {
     this.nodes.forEach(node => {
       console.log(node);
     });
   }
-
-
-
-
 
 }

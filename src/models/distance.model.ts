@@ -1,7 +1,5 @@
 import {Entity, belongsTo, model, property} from '@loopback/repository';
 import {Location} from './location.model';
-import {Stop} from './stop.model';
-
 @model(
   {
     settings:{
@@ -17,18 +15,6 @@ import {Stop} from './stop.model';
           entity: 'Location',
           entityKey: 'id',
           foreignKey: 'idLocationDestination',
-        },
-        fk_distance_id_stop_origin: {
-          name: 'fk_distance_id_stop_origin',
-          entity: 'Stop',
-          entityKey: 'id',
-          foreignKey: 'idOrigen',
-        },
-        fk_distance_id_stop_destination: {
-          name: 'fk_distance_id_stop_destination',
-          entity: 'Stop',
-          entityKey: 'id',
-          foreignKey: 'idDestino',
         },
       },
     }
@@ -48,11 +34,6 @@ export class Distance extends Entity {
   })
   distancePunto: number;
 
-  @belongsTo(() => Stop, {name: 'Origen'})
-  idOrigen: number;
-
-  @belongsTo(() => Stop, {name: 'Destino'})
-  idDestino: number;
 
   @belongsTo(() => Location, {name: 'origin'})
   idLocationOrigen: number;
