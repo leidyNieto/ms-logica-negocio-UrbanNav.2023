@@ -17,13 +17,18 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {User} from '../models';
+import {BotonPanico, User} from '../models';
 import {UserRepository} from '../repositories';
+import { ConfiguracionNotificaciones } from '../config/notificaciones.config';
+import { service } from '@loopback/core';
+import { NotificacionesService } from '../services';
 
 export class UserController {
   constructor(
     @repository(UserRepository)
     public userRepository : UserRepository,
+    @service(NotificacionesService)
+    public servicioNotificaciones: NotificacionesService,
   ) {}
 
   @post('/user')
@@ -147,4 +152,36 @@ export class UserController {
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.userRepository.deleteById(id);
   }
+
+  @post('/pedir-ayuda')
+  @response(200, {
+    description: 'Envia los datos del usuario del viaje aun correo de ayuda',
+    content: {'application/json': {schema: getModelSchemaRef(BotonPanico)}},
+  })
+  async Botondepanico(
+    @requestBody(
+      {
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(BotonPanico),
+          }
+        }
+      }
+    )
+    boton: BotonPanico
+  ): Promise<object> {
+    let datos = {
+      ruta: boton.ruta,
+      datos_conductor: boton.datos_conductor,
+      datos_usuario: boton.datos_usuario,
+      correo_ayuda: boton.correo_ayuda,
+
+      // mensaje: ``,
+
+    };
+    let url = ConfiguracionNotificaciones.urlNotificacionesPanico;
+    this.servicioNotificaciones.EnviarNotificacion(datos, url);
+    return datos;
+  }
+
 }
