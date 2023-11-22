@@ -1,26 +1,6 @@
-import {Entity, belongsTo, model, property} from '@loopback/repository';
-import {Client} from './client.model';
-import {Driver} from './driver.model';
+import {Entity, model, property} from '@loopback/repository';
 
 @model(
-  {
-    settings: {
-      foreignKeys: {
-        fk_user_clientId: {
-          name: 'fk_user_clientId',
-          entity: 'Client',
-          entityKey: 'id',
-          foreignKey: 'clientId',
-        },
-        fk_user_driverId: {
-          name: 'fk_user_driverId',
-          entity: 'Driver',
-          entityKey: 'id',
-          foreignKey: 'driverId',
-        },
-      },
-    },
-  },
 )
 export class User extends Entity {
   @property({
@@ -61,15 +41,9 @@ export class User extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+
   })
   foto: string;
-
-  @property({
-    type: 'number',
-    required: true,
-  })
-  role: number;
 
   @property({
     type: 'string',
@@ -82,12 +56,6 @@ export class User extends Entity {
     required: true,
   })
   email: string;
-
-  @belongsTo(() => Client)
-  clientId: number;
-
-  @belongsTo(() => Driver)
-  driverId: number;
 
   constructor(data?: Partial<User>) {
     super(data);

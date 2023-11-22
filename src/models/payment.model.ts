@@ -34,19 +34,26 @@ export class Payment extends Entity {
     type: 'number',
     required: true,
   })
-  method: number;
+  Total: number;
 
   @property({
     type: 'string',
     required: true,
   })
-  receiver: string;
+  metodoPago: string;
+
+  @property({
+    type: 'string',
+  })
+  paymentIntentID?: string;
 
   @belongsTo(() => Trip)
   tripId: number;
 
   @belongsTo(() => Client)
   clientId: number;
+
+
 
   constructor(data?: Partial<Payment>) {
     super(data);

@@ -1,11 +1,23 @@
-import {Entity, hasMany, model, property} from '@loopback/repository';
+import {Entity, belongsTo, hasMany, model, property} from '@loopback/repository';
 import {Cars} from './cars.model';
 import {LocationDriver} from './location-driver.model';
 import {Location} from './location.model';
 import {Trip} from './trip.model';
+import {User} from './user.model';
 
 @model(
-
+  {
+    settings: {
+      foreignKeys: {
+        fk_driver_userId: {
+          name: 'fk_driver_userId',
+          entity: 'User',
+          entityKey: 'id',
+          foreignKey: 'userId',
+        },
+      },
+    },
+  },
 )
 export class Driver extends Entity {
   @property({
@@ -35,6 +47,9 @@ export class Driver extends Entity {
 
   @hasMany(() => Cars)
   cars: Cars[];
+
+  @belongsTo(() => User)
+  userId: number;
 
   constructor(data?: Partial<Driver>) {
     super(data);

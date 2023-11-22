@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -17,11 +18,10 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import {ConfiguracionNotificaciones} from '../config/notificaciones.config';
 import {Factura, Payment} from '../models';
 import {PaymentRepository} from '../repositories';
-import { ConfiguracionNotificaciones } from '../config/notificaciones.config';
-import { NotificacionesService } from '../services';
-import { service } from '@loopback/core';
+import {NotificacionesService, StripeService} from '../services';
 
 export class PaymentController {
   constructor(
@@ -29,6 +29,8 @@ export class PaymentController {
     public paymentRepository : PaymentRepository,
     @service(NotificacionesService)
     public servicioNotificaciones: NotificacionesService,
+    @service(StripeService)
+    private servicioStripe: StripeService,
   ) {}
 
   @post('/payment')
@@ -49,8 +51,15 @@ export class PaymentController {
     })
     payment: Omit<Payment, 'id '>,
   ): Promise<Payment> {
+    // Aquí debes llamar al servicio de Stripe para crear un PaymentIntent
+    const paymentIntent = await this.servicioStripe.createPaymentIntent(payment.Total, 'USD',undefined);
+
+    // Guardar el PaymentIntent ID en tu modelo Payment
+    payment.paymentIntentID = paymentIntent.id;
+
     return this.paymentRepository.create(payment);
   }
+
 
   @get('/payment/count')
   @response(200, {

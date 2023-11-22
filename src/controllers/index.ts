@@ -23,7 +23,6 @@ export * from './trip-client.controller';
 export * from './trip-driver.controller';
 export * from './trip-location.controller';
 export * from './trip.controller';
-export * from './user-client.controller';
-export * from './user-driver.controller';
 export * from './user.controller';
-
+export * from './client-user.controller';
+export * from './driver-user.controller';

@@ -59,7 +59,7 @@ export class GraphService {
     const visited: Record<string, boolean> = {};
     const previousNodes: Record<string, string | null> = {};
 
-    // Obtén el grafo, asumí que hay una función buildGraph en tu clase
+    // Obtén el grafo,
     const graph = await this.buildGraph();
 
     const nodes = graph.getNodes();
@@ -118,7 +118,7 @@ export class GraphService {
       currentNodeId = previousNodes[currentNodeId] ?? null;
     }
 
-    // Calcular el costo del viaje utilizando tu función calcularPrecioRecorrido
+    // Calcular el costo del viaje utilizando calcularPrecioRecorrido
     const idRecorrido: number = parseInt(path[path.length - 1], 10);
     const costoDelViaje = await this.calcularPrecioRecorrido(idRecorrido);
 
