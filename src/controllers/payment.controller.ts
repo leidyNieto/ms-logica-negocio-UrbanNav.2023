@@ -17,13 +17,18 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Payment} from '../models';
+import {Factura, Payment} from '../models';
 import {PaymentRepository} from '../repositories';
+import { ConfiguracionNotificaciones } from '../config/notificaciones.config';
+import { NotificacionesService } from '../services';
+import { service } from '@loopback/core';
 
 export class PaymentController {
   constructor(
     @repository(PaymentRepository)
     public paymentRepository : PaymentRepository,
+    @service(NotificacionesService)
+    public servicioNotificaciones: NotificacionesService,
   ) {}
 
   @post('/payment')
@@ -146,5 +151,36 @@ export class PaymentController {
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.paymentRepository.deleteById(id);
+  }
+
+  @post('/enviar-factura')
+  @response(200, {
+    description: 'Enviar factura de viaje al usuario',
+    content: {'application/json': {schema: getModelSchemaRef(Factura)}},
+  })
+  async EnviarNotificacion(
+    @requestBody(
+      {
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Factura),
+          }
+        }
+      }
+    )
+    factura: Factura
+  ): Promise<object> {
+    let datos = {
+      nombre: factura.nombre,
+      fecha: factura.fecha,
+      costo: factura.costo,
+      correo: factura.correo
+
+      // mensaje: ``,
+
+    };
+    let url = ConfiguracionNotificaciones.urlNotificacionesFactura;
+    this.servicioNotificaciones.EnviarNotificacion(datos, url);
+    return datos;
   }
 }

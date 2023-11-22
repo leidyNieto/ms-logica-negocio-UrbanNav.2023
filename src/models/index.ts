@@ -10,3 +10,5 @@ export * from './qualification.model';
 export * from './trip.model';
 export * from './user.model';
 
+export * from './factura.model';
+export * from './boton-panico.model';
