@@ -30,4 +30,9 @@ export class Edge {
   setWeight(weight: number) {
     this.weight = weight;
   }
+
+  // Nuevo método para obtener el costo de la arista
+  getCosto(): number {
+    return this.weight;
+  }
 }

@@ -61,7 +61,7 @@ export class LocationController {
   }
   @authenticate({
     strategy:"auth",
-    options:[configuracionSeguridad.menuParadasId, configuracionSeguridad.listarAccion]
+    options:[configuracionSeguridad.menuParadasId,configuracionSeguridad.listarAccion]
   })
   @get('/location')
   @response(200, {

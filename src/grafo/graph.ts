@@ -5,7 +5,6 @@ import {Node} from './node';
 export class Graph {
 
   nodes: Node[];
-
   constructor(nodos: Node[]) {
     this.nodes = nodos;
   }
@@ -35,6 +34,8 @@ export class Graph {
     return this.nodes.find(node => node.getLabel() === label);
   }
 
+
+
   // show graph by console
   showGraph() {
     console.log(this.nodes);
@@ -46,5 +47,8 @@ export class Graph {
       console.log(node);
     });
   }
+
+
+
 
 }

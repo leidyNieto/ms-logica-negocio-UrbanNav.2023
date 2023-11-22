@@ -3,12 +3,12 @@ import {Edge} from './edge';
 
 // class for Node of a graph with id, label, address, and edges
 export class Node {
-  id: number;
+  id: string;
   label: string;
   name: string;
   edges: Edge[];
 
-  constructor(id: number, name: string, label: string, edges: Edge[] = []) {
+  constructor(id: string, name: string, label: string, edges: Edge[] = []) {
     this.id = id;
     this.name = name;
     this.label = label;
@@ -35,7 +35,7 @@ export class Node {
     return this.label;
   }
   // set id of node
-  setId(id: number) {
+  setId(id: string) {
     this.id = id;
   }
   // set label of node
@@ -50,5 +50,12 @@ export class Node {
   setName(name: string) {
     this.name = name;
   }
+
+   // Método para obtener una arista específica por destino
+   getAristaByDestino(destinoId: string): Edge | undefined {
+    return this.edges.find((arista) => arista.node.getId() === destinoId );
+
+  }
+
 
 }
