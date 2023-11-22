@@ -24,7 +24,7 @@ export class BotonPanico extends Model {
     type: 'string',
     required: true,
   })
-  correo_ayuda: string;
+  numero_telefono: string;
 
 
   constructor(data?: Partial<BotonPanico>) {
