@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -7,29 +8,28 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
-import {BotonPanico, User} from '../models';
+import {ConfiguracionNotificaciones} from '../config/notificaciones.config';
+import {BotonPanico, Pqrs, User} from '../models';
 import {UserRepository} from '../repositories';
-import { ConfiguracionNotificaciones } from '../config/notificaciones.config';
-import { service } from '@loopback/core';
-import { NotificacionesService } from '../services';
+import {NotificacionesService} from '../services';
 
 export class UserController {
   constructor(
     @repository(UserRepository)
-    public userRepository : UserRepository,
+    public userRepository: UserRepository,
     @service(NotificacionesService)
     public servicioNotificaciones: NotificacionesService,
-  ) {}
+  ) { }
 
   @post('/user')
   @response(200, {
@@ -180,6 +180,38 @@ export class UserController {
 
     };
     let url = ConfiguracionNotificaciones.urlNotificacionesPanico;
+    this.servicioNotificaciones.EnviarNotificacion(datos, url);
+    return datos;
+  }
+
+
+  @post('/enviar-pqrs')
+  @response(200, {
+    description: 'Enviar un mensaje PQRS al administrador',
+    content: {'application/json': {schema: getModelSchemaRef(Pqrs)}},
+  })
+  async EnviarPQRS(
+    @requestBody(
+      {
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Pqrs),
+            // order: ['tipo', 'mensaje']
+          }
+        }
+      }
+    )
+    pqrss: Pqrs
+  ): Promise<object> {
+    let mensaje = pqrss.mensaje;
+    console.log(mensaje);
+    //notificar al usuario por ses
+    let datos = {
+      tipo: pqrss.tipo,
+      mensaje: `Su mensaje PQRS es: ${mensaje}, y el tipo es: ${pqrss.tipo}`,
+
+    };
+    let url = ConfiguracionNotificaciones.urlNotificacionesPQRS;
     this.servicioNotificaciones.EnviarNotificacion(datos, url);
     return datos;
   }
