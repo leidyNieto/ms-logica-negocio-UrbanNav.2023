@@ -10,3 +10,4 @@ export * from './qualification.repository';
 export * from './trip.repository';
 export * from './user.repository';
 
+export * from './pqrs.repository';

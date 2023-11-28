@@ -17,13 +17,18 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Trip} from '../models';
+import {BotonPanico, Trip} from '../models';
 import {TripRepository} from '../repositories';
+import { ConfiguracionNotificaciones } from '../config/notificaciones.config';
+import { service } from '@loopback/core';
+import { NotificacionesService } from '../services';
 
 export class TripController {
   constructor(
     @repository(TripRepository)
     public tripRepository : TripRepository,
+    @service()
+    public servicioNotificaciones: NotificacionesService
   ) {}
 
   @post('/trip')
@@ -146,5 +151,36 @@ export class TripController {
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.tripRepository.deleteById(id);
+  }
+
+  @post('/pedir-ayuda')
+  @response(200, {
+    description: 'Envia los datos del usuario del viaje aun correo de ayuda',
+    content: {'application/json': {schema: getModelSchemaRef(BotonPanico)}},
+  })
+  async Botondepanico(
+    @requestBody(
+      {
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(BotonPanico),
+          }
+        }
+      }
+    )
+    boton: BotonPanico
+  ): Promise<object> {
+    let datos = {
+      ruta: boton.ruta,
+      datos_conductor: boton.datos_conductor,
+      datos_usuario: boton.datos_usuario,
+      numero_telefono: boton.numero_telefono,
+
+      // mensaje: ``,
+
+    };
+    let url = ConfiguracionNotificaciones.urlNotificacionesPanico;
+    this.servicioNotificaciones.EnviarNotificacion(datos, url);
+    return datos;
   }
 }
