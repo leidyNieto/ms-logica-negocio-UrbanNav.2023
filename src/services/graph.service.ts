@@ -3,7 +3,6 @@ import {repository} from '@loopback/repository';
 import {Edge} from '../grafo/edge';
 import {Graph} from '../grafo/graph';
 import {Node} from '../grafo/node';
-import {Distance} from '../models';
 import {DistanceRepository, LocationRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
@@ -86,6 +85,8 @@ export class GraphService {
       return minNodeId;
     };
 
+
+
     // Algoritmo de Dijkstra
     for (let i = 0; i < nodes.length; i++) {
       const currentNodeId = findMinDistanceNode();
@@ -107,33 +108,40 @@ export class GraphService {
           previousNodes[neighborNodeId] = currentNodeId;
         }
       });
+
     }
 
     // Reconstruir el camino más corto desde el nodo de inicio al nodo de destino
     const path: string[] = [];
     let currentNodeId: string | null = endNodeId;
+    let totalDistance = 0;
+
 
     while (currentNodeId !== null) {
+      const prevNodeId: string | null = previousNodes[currentNodeId];
+      if (prevNodeId !== null) {
+        const edge = graph.getNodeById(prevNodeId)?.getEdges().find(e => e.getNode().getId() === currentNodeId);
+        totalDistance += edge?.getWeight() || 0;
+      }
+
       path.unshift(currentNodeId);
-      currentNodeId = previousNodes[currentNodeId] ?? null;
+      currentNodeId = prevNodeId;
     }
 
     // Calcular el costo del viaje utilizando calcularPrecioRecorrido
-    const idRecorrido: number = parseInt(path[path.length - 1], 10);
-    const costoDelViaje = await this.calcularPrecioRecorrido(idRecorrido);
+    const costoDelViaje = await this.calcularPrecioRecorrido( totalDistance);
 
     return { path, costoDelViaje };
 
   }
 
-  async calcularPrecioRecorrido(idRecorrido: number): Promise<any> {
-    let recorrido: Distance = await this.distanceRepository.findById(idRecorrido);
-    let precioPorKmSeguridad = 500
+  async calcularPrecioRecorrido(totalDistance: number): Promise<any> {
+    let precioPorKmSeguridad = 500;
     console.log(precioPorKmSeguridad);
-    let precio = recorrido.distancePunto * precioPorKmSeguridad;
+    let precio = totalDistance * precioPorKmSeguridad;
     return {
       precio,
-      recorrido,
+      distanciaTotal: totalDistance,
     };
   }
 }

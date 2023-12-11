@@ -13,3 +13,4 @@ export * from './user.model';
 export * from './factura.model';
 export * from './boton-panico.model';
 export * from './pqrs.model';
+export * from './admin.model';

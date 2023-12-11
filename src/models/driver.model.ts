@@ -29,9 +29,21 @@ export class Driver extends Entity {
 
   @property({
     type: 'string',
+    id: true,
+  })
+  identi: string;
+
+  @property({
+    type: 'string',
     required: true,
   })
   numeroLicencia: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  Licencia: string;
 
   @property({
     type: 'date',
