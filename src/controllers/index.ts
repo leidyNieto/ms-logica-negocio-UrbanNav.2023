@@ -27,3 +27,4 @@ export * from './user.controller';
 export * from './client-user.controller';
 export * from './driver-user.controller';
 export * from './pqrs.controller';
+export * from './admin-user.controller';

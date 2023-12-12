@@ -11,3 +11,4 @@ export * from './trip.repository';
 export * from './user.repository';
 
 export * from './pqrs.repository';
+export * from './admin.repository';

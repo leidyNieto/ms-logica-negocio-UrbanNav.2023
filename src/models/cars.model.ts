@@ -45,6 +45,18 @@ export class Cars extends Entity {
     type: 'string',
     required: true,
   })
+  soat: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  tecnomecanico: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
   plate: string;
 
   @belongsTo(() => Driver)
