@@ -18,10 +18,11 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {ConfiguracionNotificaciones} from '../config/notificaciones.config';
-import {BotonPanico, Pqrs, User} from '../models';
-import {UserRepository} from '../repositories';
-import {NotificacionesService} from '../services';
+import {User} from '../models';
+import {ClientRepository, DriverRepository, UserRepository} from '../repositories';
+import {NotificacionesService, RegistroSeguridadService} from '../services';
+import { exist, exists } from 'should';
+import { configuracionSeguridad } from '../config/seguridad.config';
 
 export class UserController {
   constructor(
@@ -29,6 +30,12 @@ export class UserController {
     public userRepository: UserRepository,
     @service(NotificacionesService)
     public servicioNotificaciones: NotificacionesService,
+    @service(RegistroSeguridadService)
+    public servicioRegistroSeguridad: RegistroSeguridadService,
+    @repository(ClientRepository)
+    public clientRepository: ClientRepository,
+    @repository(DriverRepository)
+    public driverRepository: DriverRepository,
   ) { }
 
   @post('/user')
@@ -49,7 +56,52 @@ export class UserController {
     })
     user: Omit<User, 'id'>,
   ): Promise<User> {
-    return this.userRepository.create(user);
+     // Crear el usuario en el servicio de lógica
+  const UsuarioCreadoEnLogica = await this.userRepository.create(user);
+
+  //constantes de los roles
+  const clienteSeguridadId = configuracionSeguridad.clienteSeguridadId;
+  const conductorSeguridadId = configuracionSeguridad.conductorSeguridadId;     
+  
+  // Verificar si el usuario es un cliente
+     const clienteExistente = await this.clientRepository.findOne({
+      where: {
+        userId: UsuarioCreadoEnLogica.id,
+      },
+    });
+
+    if (clienteExistente) {
+    // Crear el usuario en el servicio de seguridad utilizando los datos del usuario en la lógica
+      await this.servicioRegistroSeguridad.CrearUsuarioEnSeguridad({
+        nombre: UsuarioCreadoEnLogica.Name,
+        correo: UsuarioCreadoEnLogica.email,
+        apellido: UsuarioCreadoEnLogica.Lastname,
+        telefono: UsuarioCreadoEnLogica.phone,
+        clave: UsuarioCreadoEnLogica.password,
+        rolId: clienteSeguridadId,
+      });
+    }
+
+    // Verificar si el usuario es un conductor
+    const conductorExistente = await this.driverRepository.findOne({
+      where: {
+        userId: UsuarioCreadoEnLogica.id,
+      },
+    });
+
+    if (conductorExistente) {
+      // Crear el usuario en el servicio de seguridad utilizando los datos del usuario en la lógica
+      await this.servicioRegistroSeguridad.CrearUsuarioEnSeguridad({
+        nombre: UsuarioCreadoEnLogica.Name,
+        correo: UsuarioCreadoEnLogica.email,
+        apellido: UsuarioCreadoEnLogica.Lastname,
+        telefono: UsuarioCreadoEnLogica.phone,
+        clave: UsuarioCreadoEnLogica.password,
+        rolId: conductorSeguridadId,
+      });
+    }
+
+  return UsuarioCreadoEnLogica; 
   }
 
   @get('/user/count')

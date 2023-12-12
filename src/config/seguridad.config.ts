@@ -11,4 +11,6 @@ export namespace configuracionSeguridad {
   export const userMysql = process.env.USER_MYSQL;
   export const passwordMysql = process.env.PASSWORD_MYSQL;
   export const passwordStripe = process.env.PASSWORD_STRIPE??"";
+  export const clienteSeguridadId = "652d900783c5d61ac481b06f";
+  export const conductorSeguridadId = "652d8ff483c5d61ac481b06e";
 }
